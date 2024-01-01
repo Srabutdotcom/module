@@ -7,7 +7,7 @@ export default [
     input: './modul.js',
     output: {
       //dir: 'dist',
-      file: 'dist/modul.bundle.js',
+      file: 'dist/modul.min.js',
       format: 'es', // Use ES module format,
       //chunkFileNames: '[name]-[hash].js'
     },

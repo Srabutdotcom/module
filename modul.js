@@ -11,7 +11,7 @@ export class Module {
    addModule(url) {
       if (this.urls.has(url)) return
       this.beingProcess.add(
-         import(url)
+         importJs(url)
             .then(mod => {
                this.modules = { ...this.modules, ...mod }
                this.beingProcess.delete(url);
@@ -22,7 +22,7 @@ export class Module {
       )
    }
 
-   async getModule(name) {debugger;
+   async getModule(name) {
       if(this.beingProcess.size) {
          await Promise.all([...this.beingProcess])
          return this.modules[name]
@@ -32,3 +32,14 @@ export class Module {
 }
 
 export const modules = new Module();
+
+async function importJs(url = 'https://raw.githubusercontent.com/Srabutdotcom/aid/master/whatis/whatis.js') {
+   const response = await fetch(url);
+   if (!response.ok) {
+      console.error('Failed to fetch the file');
+      return;
+   }
+
+   const blob = await response.blob();
+   return await import(URL.createObjectURL(new Blob([blob], { type: 'text/javascript' })))
+}
